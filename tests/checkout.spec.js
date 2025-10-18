@@ -1,20 +1,20 @@
-import {test, expect} from '@playwright/test'
-import { Checkout } from './pages/checkoutObj';
+import {expect} from '@playwright/test'
+import {test} from './fixtures/fixtures.js';
 
-// If we use the "Fixtures" method, then we would NOT need to use line 1-2
-// Instead we would use the following imports on line 5 & 6
-// import {test} from './fixtures/fixtures.js'
-// import {expect} from '@playwright/test'
-// I will update the code to use this fixtures method later :(
+test('complete checkout flow', async ({login, product, basket, checkout1, checkout2, orderConfirmation}) => {
+  await login.navigateToUrl();
+  await login.loginFailureAndAssertUrl();
+  await login.loginSuccessAndAssertUrl();
 
-test('swaglabsCheckout', async({page}) => {
-    const checkout = new Checkout(page);
-    await checkout.navigateToUrl();
-    await checkout.loginSuccessAndAssertUrl();
-    await checkout.addBikeLightToBasketAndAssertBasket();
-    await checkout.verifyBasketAndAssertUrl();
-    await checkout.goToCheckoutStep1AndAssertUrl();
-    await checkout.fillDetailsForCheckoutStep1();
-    await checkout.goToCheckoutStep2AndAssertUrl();
-    await checkout.clickOnFinishBtnAndAssertUrlAndOrderConfirmationText();
-})
+  await product.sortProductsLowtoHighPrice();
+  await product.addBikeLightToBasketAndAssertBasket();
+  await product.goToBasketPageAndAssertUrl();
+
+  await basket.goToCheckoutStep1AndAssertUrl();
+
+  await checkout1.fillDetailsForCheckoutStep1();
+  await checkout1.goToCheckoutStep2AndAssertUrl();
+
+  await checkout2.goToOrderConfirmationAndAssertUrl();
+  await orderConfirmation.AssertOrderConfirmationText();
+});

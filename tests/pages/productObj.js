@@ -11,16 +11,22 @@ export class Product {
     }
     
     async sortProductsLowtoHighPrice() {
-        await this.sortSelect.selectOption({ label: 'Price (low to high)' });   
+        await this.sortSelect.selectOption({ label: 'Price (low to high)' });
+        await this.page.waitForTimeout(1000);
+        await expect(this.sortSelect).toHaveValue('lohi');   
     }
-
-    async addBikeLightToBasketAndAssertBasket() {
-        await this.bike_light_item.click();
-        await expect(this.shopping_cart_badge).toHaveCount(1);
+    
+    // This locator was more difficult so didn't define in the constructor for ONLY this Function!!
+    async addProductToBasket(productName) {
+        await this.page.locator('.inventory_item')
+                       .filter({hasText: `${productName}`})
+                       .getByRole('button', {name: 'Add to cart'}).click();
+        await expect(this.shopping_cart_badge).toHaveText('1');
     }
     
     async goToBasketPageAndAssertUrl() {
         await this.basket.click();
+        await this.page.waitForTimeout(1000);
         await expect(this.page).toHaveURL('https://www.saucedemo.com/cart.html');
         
     }

@@ -7,13 +7,16 @@ test('complete checkout flow', async ({login, product, basket, checkout1, checko
   await login.loginSuccessAndAssertUrl();
 
   await product.sortProductsLowtoHighPrice();
-  await product.addBikeLightToBasketAndAssertBasket();
+  await product.addProductToBasket('Sauce Labs Bolt T-Shirt');
   await product.goToBasketPageAndAssertUrl();
 
   await basket.goToCheckoutStep1AndAssertUrl();
 
   await checkout1.fillDetailsForCheckoutStep1();
   await checkout1.goToCheckoutStep2AndAssertUrl();
+
+  const MULTIPLIER = 1.08005003127;
+  await checkout2.assertTotalsWithMultiplier(MULTIPLIER);
 
   await checkout2.goToOrderConfirmationAndAssertUrl();
   await orderConfirmation.AssertOrderConfirmationText();

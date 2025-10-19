@@ -18,6 +18,7 @@ export class Checkout1 {
     
     async goToCheckoutStep2AndAssertUrl() {
         await this.continue_btn.click()
+        await this.page.waitForTimeout(1000);
         await expect(this.page).toHaveURL('https://www.saucedemo.com/checkout-step-two.html')
     }
     

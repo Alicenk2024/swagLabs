@@ -18,6 +18,7 @@ export class Login {
         await this.username_textbox.fill('standard_user');
         await this.password_textbox.fill('secret_sauce');
         await this.login_btn.click();
+        await this.page.waitForTimeout(1000);
         await expect(this.page).toHaveURL('https://www.saucedemo.com/inventory.html');
     }
     
@@ -25,6 +26,7 @@ export class Login {
         await this.username_textbox.fill('never_used');
         await this.password_textbox.fill('hey781');
         await this.login_btn.click();
+        await this.page.waitForTimeout(1000);
         await expect(this.error).toBeVisible();
     }
     
